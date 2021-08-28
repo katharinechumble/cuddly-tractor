@@ -47,16 +47,17 @@ module.exports = app => {
         updateDb();
         console.log("Success, note deleted!");
     });
-    
-    // Display notes
-    app.get('/api/notes', function(req, res) {
-        res.sendFile(path.join(__dirname, "../public/notes.html"));
-    });
 
     //Display index.html
     app.get('*', function(req, res) {
         res.sendFile(path.join(__dirname, "../public/index.html"));
     });
+
+    // Display notes
+    app.get('/notes', function(req, res) {
+         res.sendFile(path.join(__dirname, "../public/notes.html"));
+       });
+
     // update json file
     function updateDb() {
         fs.writeFile("db/db.json", JSON.stringify(notes, '\t'), err => {
