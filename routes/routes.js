@@ -1,3 +1,8 @@
+// requires dependencies
+
+const fs = require('fs');
+const path = require('path');
+
 // set up the routes
 // Basic routes
 module.exports = app => {
