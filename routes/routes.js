@@ -48,15 +48,16 @@ module.exports = app => {
         console.log("Success, note deleted!");
     });
 
+    // Display notes
+    app.get('/notes', function(req, res) {
+        res.send(path.join(__dirname, '../public/notes.html'));
+    });
+
     //Display index.html
     app.get('*', function(req, res) {
         res.sendFile(path.join(__dirname, "../public/index.html"));
     });
 
-    // Display notes
-    app.get('/notes/', function(req, res) {
-       res.send(path.join(__dirname, '../public/notes.html'));
-    });
    // app.get('/notes/', function(req, res) {
    //      res.sendFile(path.join("./public/notes.html"));
     //   });
