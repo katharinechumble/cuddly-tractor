@@ -54,12 +54,12 @@ module.exports = app => {
     });
 
     // Display notes
-    //app.get('/notes', function(req, res) {
-    //    res.send()
-   // })
     app.get('/notes/', function(req, res) {
-         res.sendFile(path.join("./public/notes.html"));
-       });
+       res.send(path.join('../public/notes.html'));
+    });
+   // app.get('/notes/', function(req, res) {
+   //      res.sendFile(path.join("./public/notes.html"));
+    //   });
 
     // update json file
     function updateDb() {
