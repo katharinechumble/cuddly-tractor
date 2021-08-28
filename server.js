@@ -55,7 +55,7 @@ module.exports = app => {
 
     // Display notes
     app.get('/notes', function(req, res) {
-         res.sendFile(path.join(__dirname, "/public/notes.html"));
+         res.sendFile(path.join("./public/notes.html"));
        });
 
     // update json file
