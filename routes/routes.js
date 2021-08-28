@@ -1,24 +1,4 @@
-// set up dependencies
-const express = require("express");
-const fs = require("fs");
-const path = require('path');
-
-// call express
-
-const app = express();
-const PORT = process.env.PORT || 3000;
-
-// parse data
-
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-app.use(express.static("public"));
-
-// requiring routes file
-
-require('./routes/routes.js')(app);
-
-/* // set up the routes
+// set up the routes
 // Basic routes
 module.exports = app => {
     fs.readFile("./db/db.json", 'utf8', (err, data) => {
@@ -27,7 +7,7 @@ module.exports = app => {
         var notes = JSON.parse(data);
     });
 
-        //Display index.html
+/*         //Display index.html
         app.get('/', function(req, res) {
             res.sendFile(path.join(__dirname, "/public/index.html"));
         });
@@ -35,7 +15,7 @@ module.exports = app => {
         // Display notes
         app.get('/notes/', function(req, res) {
            res.sendFile(path.join(__dirname, '/public/notes.html'));
-        });
+        }); */
 
     app.get("/api/notes", function(req, res){
         res.json(notes);
@@ -64,29 +44,23 @@ module.exports = app => {
     });
 
     //Display index.html
-/*     app.get('*', function(req, res) {
+    app.get('*', function(req, res) {
         res.sendFile(path.join(__dirname, "../public/index.html"));
     });
 
     // Display notes
     app.get('/notes/', function(req, res) {
        res.send(path.join(__dirname, '../public/notes.html'));
-    }); */
+    });
    // app.get('/notes/', function(req, res) {
    //      res.sendFile(path.join("./public/notes.html"));
     //   });
 
     // update json file
-  /*   function updateDb() {
+    function updateDb() {
         fs.writeFile("db/db.json", JSON.stringify(notes, '\t'), err => {
             if (err) throw err;
             return true;
         });
     };
-}; 
- */
-// call listener
-
-app.listen(PORT, function() {
-    console.log("app is listening on PORT:" + PORT);
-});
+};
