@@ -19,7 +19,7 @@ app.use(express.static("public"));
 module.exports = app => {
     fs.readFile("./db/db.json", 'utf8', (err, data) => {
         if (err) throw err;
-        
+
         var notes = JSON.parse(data);
     });
     app.get("/api/notes", function(req, res){
@@ -49,13 +49,13 @@ module.exports = app => {
     });
     
     // Display notes
-    app.get('/notes', function(req, res) {
-        res.sendFile(path.join(__dirname, "./public/notes.html"));
+    app.get('/api/notes', function(req, res) {
+        res.sendFile(path.join(__dirname, "../public/notes.html"));
     });
 
     //Display index.html
     app.get('*', function(req, res) {
-        res.sendFile(path.join(__dirname, "./public/index.html"));
+        res.sendFile(path.join(__dirname, "../public/index.html"));
     });
     // update json file
     function updateDb() {
@@ -63,8 +63,8 @@ module.exports = app => {
             if (err) throw err;
             return true;
         });
-    }
-}
+    };
+};
 
 // call listener
 
