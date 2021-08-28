@@ -54,7 +54,10 @@ module.exports = app => {
     });
 
     // Display notes
-    app.get('/notes', function(req, res) {
+    //app.get('/notes', function(req, res) {
+    //    res.send()
+   // })
+    app.get('/notes/', function(req, res) {
          res.sendFile(path.join("./public/notes.html"));
        });
 
