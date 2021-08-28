@@ -17,7 +17,7 @@ app.use(express.static("public"));
 // set up the routes
 // Basic routes
 app.get("/", function(req, res){
-    res.sendFile(path.join(__dirname, "/public/index.html"));
+    res.sendFile(path.join(__dirname, "./public/index.html"));
 });
 
 app.get("/notes", function(req, res) {
@@ -26,7 +26,7 @@ app.get("/notes", function(req, res) {
 
 // set up api endpoints
 app.post("/api/notes", function(req, res) {
-    fs.readFile(__dirname + "db/db.json", 'utf8', function(error, notes) {
+    fs.readFile(__dirname + "./db/db.json", 'utf8', function(error, notes) {
         if (error) {
             return console.log(error);
         }
@@ -36,7 +36,7 @@ app.post("/api/notes", function(req, res) {
         const newNote = { title: req.body.title, text: req.body.text, id: id};
         const currentNote = notes.concat(newNote);
 
-        fs.writeFile(__dirname + "db/db.json", JSON.stringify(currentNote), function(error, data) {
+        fs.writeFile(__dirname + "./db/db.json", JSON.stringify(currentNote), function(error, data) {
             if (error) {
                 return error
             }
@@ -44,6 +44,49 @@ app.post("/api/notes", function(req, res) {
             res.json(currentNote);
         });
     });
+});
+
+// pull input from db.json
+
+app.get("/api/notes", function(req, res) {
+    fs.readFile(__dirname + "./db/db.json", 'utf8', function(error, data) {
+        if(error) {
+            return console.log(error);
+        }
+        console.log ("Welcome to Notetaker.", data);
+        res.json(JSON.parse(data));
+    });
+});
+
+// Bonus delete notes
+
+app.delete("./api/notes/:id", function(req, res) {
+    const noteId = JSON.parse(req.params.id);
+    console.log(noteId);
+    fs.readFile(__dirname + "./db/db.json", 'utf8', function(error, notes) {
+        if (error) {
+            return console.log(error);
+        }
+        notes = JSON.parse(notes);
+        notes = notes.filter(val => val.id !== noteId)
+
+        fs.writeFile()
+    })
+});
+
+app.put("/api/notes/:id", function(req, res) {
+    const noteId = JSON.parse(req.params.id)
+    console.log(noteId);
+    fs.readFile(__dirname + "./db/db.json", 'utf8', function(error, notes) {
+        if (error) {
+            return console.log(error);
+        }
+        notes.JSON.parse(notes);
+
+        notes = notes.filter(val => val.id !== noteId);
+
+        fs.writeFile()
+    })
 });
 
 // call listener
