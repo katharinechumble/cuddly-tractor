@@ -36,7 +36,7 @@ module.exports = app => {
     
     // pull input from db.json
     
-    app.get("/api/notes/id:", function(req, res) {
+    app.get("/api/notes/:id", function(req, res) {
         res.json(notes[req.params.id]);
     });
     
