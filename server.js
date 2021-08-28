@@ -22,6 +22,17 @@ module.exports = app => {
 
         var notes = JSON.parse(data);
     });
+
+        //Display index.html
+        app.get('*', function(req, res) {
+            res.sendFile(path.join(__dirname, "../public/index.html"));
+        });
+    
+        // Display notes
+        app.get('/notes/', function(req, res) {
+           res.send(path.join(__dirname, '../public/notes.html'));
+        });
+
     app.get("/api/notes", function(req, res){
         res.json(notes);
     });
@@ -49,14 +60,14 @@ module.exports = app => {
     });
 
     //Display index.html
-    app.get('*', function(req, res) {
+/*     app.get('*', function(req, res) {
         res.sendFile(path.join(__dirname, "../public/index.html"));
     });
 
     // Display notes
     app.get('/notes/', function(req, res) {
        res.send(path.join(__dirname, '../public/notes.html'));
-    });
+    }); */
    // app.get('/notes/', function(req, res) {
    //      res.sendFile(path.join("./public/notes.html"));
     //   });
