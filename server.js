@@ -1,6 +1,6 @@
 // set up dependencies
 const express = require("express");
-const fs = require(fs);
+const fs = require("fs");
 const path = require('path');
 
 // call express
@@ -12,10 +12,17 @@ const PORT = process.env.PORT || 3001;
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static(__dirname));
+app.use(express.static("public"));
 
-// route file
-require('./routes/routes')(app);
+// set up the routes
+// Basic routes
+app.get("/", function(req, res){
+    res.sendFile(path.join(__dirname, "/public/index.html"));
+});
+
+app.get("/notes", function(req, res) {
+  res.sendFile(path.join(__dirname, "/public/notes.html"));  
+});
 
 // call listener
 
