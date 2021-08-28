@@ -70,8 +70,13 @@ app.delete("./api/notes/:id", function(req, res) {
         notes = JSON.parse(notes);
         notes = notes.filter(val => val.id !== noteId)
 
-        fs.writeFile()
-    })
+        fs.writeFile(__dirname + "./db/db.json", 'utf8', function(error, notes) {
+            if (error) {
+                return console.log(error);
+            }
+            res.json(notes);
+        });
+    });
 });
 
 app.put("/api/notes/:id", function(req, res) {
