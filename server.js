@@ -1,4 +1,5 @@
 // set up dependencies
+const { errorMonitor } = require("events");
 const express = require("express");
 const fs = require("fs");
 const path = require('path');
@@ -90,8 +91,13 @@ app.put("/api/notes/:id", function(req, res) {
 
         notes = notes.filter(val => val.id !== noteId);
 
-        fs.writeFile()
-    })
+        fs.writeFile(__dirname + "./db/db.json", JSON.stringify(notes), function(error, data) {
+            if (error) {
+                return error;
+            }
+            res.json(notes);
+        });
+    });
 });
 
 // call listener
