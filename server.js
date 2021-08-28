@@ -1,5 +1,4 @@
 // set up dependencies
-const { errorMonitor } = require("events");
 const express = require("express");
 const fs = require("fs");
 const path = require('path');
@@ -7,7 +6,7 @@ const path = require('path');
 // call express
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 
 // parse data
 
@@ -17,88 +16,55 @@ app.use(express.static("public"));
 
 // set up the routes
 // Basic routes
-app.get("/", function(req, res){
-    res.sendFile(path.join(__dirname, "./public/index.html"));
-});
+module.exports = app => {
+    fs.readFile("./db/db.json", 'utf8', (err, data) => {
+        if (err) throw err;
+        
+        var notes = JSON.parse(data);
+    });
+    app.get("/api/notes", function(req, res){
+        res.json(notes);
+    });
+    
+    // set up api endpoints
+    app.post("/api/notes", function(req, res) {
+        let newNote = req.body;
+        notes.push(newNote);
+        updateDb();
+        return console.log("Success! Added new note!");
+    });
+    
+    // pull input from db.json
+    
+    app.get("/api/notes/id:", function(req, res) {
+        res.json(notes[req.params.id]);
+    });
+    
+    // Bonus delete notes
+    
+    app.delete("/api/notes/:id", function(req, res) {
+        notes.splice(req.params.id, 1);
+        updateDb();
+        console.log("Success, note deleted!");
+    });
+    
+    // Display notes
+    app.get('/notes', function(req, res) {
+        res.sendFile(path.join(__dirname, "./public/notes.html"));
+    });
 
-app.get("/notes", function(req, res) {
-  res.sendFile(path.join(__dirname, "./public/notes.html"));  
-});
-
-// set up api endpoints
-app.post("/api/notes", function(req, res) {
-    fs.readFile(__dirname + "./db/db.json", 'utf8', function(error, notes) {
-        if (error) {
-            return console.log(error);
-        }
-        notes = JSON.parse(notes);
-
-        const id = notes[notes.length - 1].id + 1;
-        const newNote = { title: req.body.title, text: req.body.text, id: id};
-        const currentNote = notes.concat(newNote);
-
-        fs.writeFile(__dirname + "./db/db.json", JSON.stringify(currentNote), function(error, data) {
-            if (error) {
-                return error
-            }
-            console.log(currentNote)
-            res.json(currentNote);
+    //Display index.html
+    app.get('*', function(req, res) {
+        res.sendFile(path.join(__dirname, "./public/index.html"));
+    });
+    // update json file
+    function updateDb() {
+        fs.writeFile("db/db.json", JSON.stringify(notes, '\t'), err => {
+            if (err) throw err;
+            return true;
         });
-    });
-});
-
-// pull input from db.json
-
-app.get("/api/notes", function(req, res) {
-    fs.readFile(__dirname + "./db/db.json", 'utf8', function(error, data) {
-        if(error) {
-            return console.log(error);
-        }
-        console.log ("Welcome to Notetaker.", data);
-        res.json(JSON.parse(data));
-    });
-});
-
-// Bonus delete notes
-
-app.delete("./api/notes/:id", function(req, res) {
-    const noteId = JSON.parse(req.params.id);
-    console.log(noteId);
-    fs.readFile(__dirname + "./db/db.json", 'utf8', function(error, notes) {
-        if (error) {
-            return console.log(error);
-        }
-        notes = JSON.parse(notes);
-        notes = notes.filter(val => val.id !== noteId)
-
-        fs.writeFile(__dirname + "./db/db.json", 'utf8', function(error, notes) {
-            if (error) {
-                return console.log(error);
-            }
-            res.json(notes);
-        });
-    });
-});
-
-app.put("/api/notes/:id", function(req, res) {
-    const noteId = JSON.parse(req.params.id)
-    console.log(noteId);
-    fs.readFile(__dirname + "./db/db.json", 'utf8', function(error, notes) {
-        if (error) {
-            return console.log(error);
-        }
-        notes.JSON.parse(notes);
-
-        notes = notes.filter(val => val.id !== noteId);
-
-        fs.writeFile(__dirname + "./db/db.json", JSON.stringify(notes), function(error, data) {
-            if (error) {
-                return error;
-            }
-            res.json(notes);
-        });
-    });
-});
+    }
+}
 
 // call listener
 
